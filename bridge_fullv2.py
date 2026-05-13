@@ -166,23 +166,84 @@ def _ws_send(msg):
         except:
             pass
 
-
+# =========================
+# VALID BANDS ~ Used to validate incoming OSC messages.
+# REMOVE VALID_SENSORS FOR GENERIC DEVICE COMPATIBILITY
+# =========================
+VALID_BANDS   = {"delta", "theta", "alpha", "beta", "gamma"}
+# VALID_SENSORS = {"AF7", "AF8", "TP9", "TP10", "mean"}
 
 # =========================
-# OSC HANDLER ~ Creates dictionary for only valid bands, then appends to a dictionary called brain
-# brain is going to contain values given in args for /brain/
+# BRAIN DICT ~ Flat-keyed dictionary. All of these are valid keys:
+#   "alpha"          → mean across all sensors (backward-compatible)
+#   "alpha/AF7"      → left prefrontal absolute band power
+#   "alpha/AF8"      → right prefrontal absolute band power
+#   "alpha/TP9"      → left temporal absolute band power
+#   "alpha/TP10"     → right temporal absolute band power
+#   "faa"            → frontal alpha asymmetry: alpha/AF7 - alpha/AF8
+#                      positive = left dominant (positive/approach)
+#                      negative = right dominant (withdrawal/stress)
+#   "taa"  → temporal alpha asymmetry: alpha/TP9 - alpha/TP10
 # =========================
-VALID_BANDS = {"delta", "theta", "alpha", "beta", "gamma"}
 brain = {}
-def handle_osc(address, *args):
-    band = address.split("/")[-1]
 
+# =========================
+# DERIVED ASYMMETRY INDICES ~ Recomputed every time a new OSC message arrives that could affect them.
+# FAA and temporal asymmetry are the two most validated emotion markers  from the Muse's electrode layout.
+# Averaging across sensors destroys them, so we preserve and expose them as first-class brain keys.
+# =========================
+def _update_derived():
+    af7  = brain.get("alpha/AF7")
+    af8  = brain.get("alpha/AF8")
+    tp9  = brain.get("alpha/TP9")
+    tp10 = brain.get("alpha/TP10")
+
+    # Only compute if both sensors are available
+    if af7 is not None and af8 is not None:
+        brain["faa"] = af7 - af8
+
+    if tp9 is not None and tp10 is not None:
+        brain["taa"] = tp9 - tp10
+
+
+# =========================
+# OSC HANDLER ~ Appends to brain dictionary, with updated handling for spacial formats
+# =========================
+def handle_osc(address, *args):
+    # address is one of:
+    #   /brain/band    (2 segments after split on "/", ignoring leading "")
+    #   /brain/band/sensor    (3 segments)
+    parts = [p for p in address.split("/") if p]    # e: ["brain", "alpha"] or ["brain", "alpha", "AF7"]
+
+    if len(parts) < 2 or parts[0] != "brain":
+        return
+
+    band = parts[1]     # /brain
     if band not in VALID_BANDS:
         return
 
     value = float(args[0])
 
-    brain[band] = value
+    if len(parts) == 2:     # /brain/band
+        brain[band] = value
+
+    elif len(parts) == 3:      # /brain/band/sensor
+        sensor = parts[2]
+        # if sensor not in VALID_SENSORS:
+        #     return
+
+        # Store per-sensor key: e: "alpha/AF7"
+        brain[f"{band}/{sensor}"] = value
+
+        # Update the mean key by averaging all sensors that have arrived. This keeps backward-compatible rules
+        # working even when the pipeline is switched to per-sensor output.
+        sensor_keys = [f"{band}/{s}" for s in ("AF7", "AF8", "TP9", "TP10")]
+        present = [brain[k] for k in sensor_keys if k in brain]
+        if present:
+            brain[band] = sum(present) / len(present)
+
+        # Recompute frontal alpha asymmetry and temporal asymmetry after every sensor update
+        _update_derived()
 
 # =========================
 # DISCRETE INTERPRETER ~ This just detects transitions in between settings/states.
@@ -248,25 +309,33 @@ def receiver():
 # CHECK CONDITION ~ This will return a boolean based on the brain library and conditions in JSON
 # NOTE: check_condition, evaluate_rules, and apply_outputs are all related to the JSON file
 # This JSON will soon be easily editable by the user, once I learn PyQt.
+# It now reads an optional "sensor" field from the condition.
+# If absent, it defaults to the mean key (fully backward-compatible).
+#
+# Example condition objects:
+#   {"band": "alpha", "op": ">", "value": 0.3}            → reads brain["alpha"]
+#   {"band": "alpha", "sensor": "AF7", "op": ">", "value": 0.3} → reads brain["alpha/AF7"]
+#   {"band": "faa",   "op": "<", "value": -0.1}            → reads brain["faa"]
 # =========================
 def check_condition(cond, brain):
-    band = cond["band"]
-    op = cond["op"]
-    value = cond["value"]
+    band   = cond["band"]
+    op     = cond["op"]
+    value  = cond["value"]
+    sensor = cond.get("sensor")  # None if not specified
 
-    x = brain.get(band, 0.5)
+    # Build the lookup key
+    if sensor and sensor != "mean":
+        key = f"{band}/{sensor}"
+    else:
+        key = band  # mean / derived index
 
-    if op == "<":
-        return x < value
-    elif op == ">":
-        return x > value
-    elif op == "<=":
-        return x <= value
-    elif op == ">=":
-        return x >= value
-    elif op == "==":
-        return x == value
+    x = brain.get(key, 0.5)
 
+    if op == "<":   return x < value
+    if op == ">":   return x > value
+    if op == "<=":  return x <= value
+    if op == ">=":  return x >= value
+    if op == "==":  return x == value
     return False
 
 # =========================
@@ -288,66 +357,56 @@ def evaluate_rules(brain):
 # =========================
 # APPLY OUTPUTS ~ Determines the right output from the JSON file, any value+source+scale, and sends to VTS
 # Also acts as a dispatcher for parameter, expression, item
+# Now reads an optional "sensor" field on parameter outputs. If present, sources the value from brain["beta/AF8"] etc.
+# If absent, falls back to brain["beta"] (the mean).
 # =========================
-last_hotkey_time = {}  # hotkey_id → timestamp
-HOTKEY_COOLDOWN = 3.0
-
+last_hotkey_time = {}
+HOTKEY_COOLDOWN  = 3.0
 
 def apply_outputs(outputs, brain, just_entered=None, just_exited=None):
     if just_entered is None: just_entered = set()
     if just_exited  is None: just_exited  = set()
 
-    # Build a map of which rule each output belongs to
-    # so we can know if it just entered/exited
     rule_output_map = {}
     for rule in RULES:
         for out in rule["outputs"]:
             rule_output_map[id(out)] = rule["name"]
 
     for out in outputs:
-        out_type = out.get("type", "parameter")
+        out_type  = out.get("type", "parameter")
         rule_name = rule_output_map.get(id(out), "")
 
-        # Parameters are continuous and must be handled differently
         if out_type == "parameter":
-
-            # Parameters update every frame continuously
             if "value" in out:
-                # Static value
                 value = float(out["value"])
             elif "source" in out:
-                # Derived from brain signal... still experimental. Inspect for brain signal accuracy.
-                raw = brain.get(out["source"], 0.5)
-                scale = out.get("scale", 1.0)
-                offset = out.get("offset", 0.0)
-
-                # Centered around 0.5 > remap
-                value = (raw - 0.5) * scale + offset
+                source  = out["source"]
+                sensor  = out.get("sensor")            # optional per-sensor source
+                key     = f"{source}/{sensor}" if sensor and sensor != "mean" else source
+                raw     = brain.get(key, 0.5)
+                scale   = out.get("scale", 1.0)
+                offset  = out.get("offset", 0.0)
+                value   = (raw - 0.5) * scale + offset
             else:
                 continue
             send_parameter(out["param"], value)
 
-        # Expression fired only when the rule transitions, not every frame
         elif out_type == "expression":
             if rule_name in just_entered:
                 send_expression(out["expression"], active=True)
-            # Deactivation is handled below via just_exited
 
-        # Hotkey fired only once on entry
         elif out_type == "hotkey":
-
             if rule_name in just_entered:
-                hid = out["hotkey_id"]
-                now = time.time()
+                hid      = out["hotkey_id"]
+                now      = time.time()
                 cooldown = out.get("cooldown", HOTKEY_COOLDOWN)
                 if now - last_hotkey_time.get(hid, 0) >= cooldown:
                     send_hotkey(hid)
                     last_hotkey_time[hid] = now
 
         else:
-            print(f"Unknown output type: {out_type} ~ skipping")
+            print(f"Unknown output type: {out_type} — skipping")
 
-    # Deactivate expressions belonging to rules that just exited
     for rule in RULES:
         if rule["name"] in just_exited:
             for out in rule["outputs"]:
@@ -365,6 +424,11 @@ def render_dashboard(brain, active_rules, outputs):
     for band in ["delta", "theta", "alpha", "beta", "gamma"]:
         v = brain.get(band, 0.0)
         lines.append(f"{band:<6} [{bar(v)}] {v:.2f}")
+        for sensor in ["AF7", "AF8", "TP9", "TP10"]:
+            key = f"{band}/{sensor}"
+            if key in brain:
+                sv = brain[key]
+                lines.append(f"       [{sensor} ] [{bar(sv)}] {sv:.2f}")
 
     lines.append("")
     lines.append("Active States:")
@@ -475,5 +539,3 @@ server = BlockingOSCUDPServer(("127.0.0.1", OSC_PORT), dispatcher)
 
 print("Listening for OSC...")
 server.serve_forever()
-
-
