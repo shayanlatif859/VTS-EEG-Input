@@ -20,7 +20,7 @@ The goal is not emotion detection, but interactive experimentation with physiolo
 
 ## Basic functionality
 ### EEG Acquisition + Sliding buffer analysis
-A stream for a discrete-time signal is created for each EEG channel, which may be represented as $ x[n] $, with $ x= $ EEG amplitude and $ n= $ the sample index. This data is stored and a sliding buffer 4 seconds long is set to 
+A stream for a discrete-time signal is created for each EEG channel, which may be represented as $x[n]$, with $ x= $ EEG amplitude and $ n= $ the sample index. This data is stored and a sliding buffer 4 seconds long is set to 
 be taken at every sample so that it may analyze frequencies from 0.5 Hz samples (delta waves).
 In Hz, the common frequency ranges of the brain are defined as:
 - Delta ~ 0.5-4
