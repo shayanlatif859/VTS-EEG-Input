@@ -65,8 +65,12 @@ $$
 This data is still raw EEG input, so it is not stable, thus it has to be normalized.
 ### Normalization
 Using a 30-second window and getting the minimum and maximum, the 
-value is normalized with the equation for min-max normalization, which maps values from $0≤x_{norm}≤1$. The equation is as follows:\
-$x_{norm}=\frac{x-x_{min}}{x_{max}-x_{min}} $\
+value is normalized with the equation for min-max normalization, which maps values from $0≤x_{norm}≤1$. The equation is as follows:
+
+$$
+x_{norm}=\frac{x-x_{min}}{x_{max}-x_{min}}
+$$
+
 This normalized value may be displayed and, then received by the bridge, which will stream to VTS and using a JSON file mapping these float values to rules, will interpet the rules accordingly.
 
 ## Installation
