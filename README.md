@@ -31,17 +31,38 @@ In Hz, the common frequency ranges of the brain are defined as:
 
 ### Bandpass Filtering
 All samples from each electrode are singled out so that each electrode may be applied with a Butterworth bandpass filter, which has a flat frequency response in the passband, minimizing the effects of ripples and artifacts.
-This allows for the separation of the raw EEG signal in the channel into the five frequencies ranges. Suppose the signal resembled this:\
-$ x(t)=sin(2π3t)+sin(2π10t)+sin(2π25t) $\
-This contains 3 Hz delta, 10 Hz alpha, and 25 Hz beta. Applying an alpha filter would filter out the signal to output:\
-$ y(t)≈sin(2π10t) $\
-It is then filtered back and forth to prevent phase distortion using filtfilt().\
+This allows for the separation of the raw EEG signal in the channel into the five frequencies ranges.
+
+Suppose the signal resembled this:
+
+$$
+x(t)=\sin(2\pi 3t)+\sin(2\pi 10t)+\sin(2\pi 25t)
+$$
+
+This contains 3 Hz delta, 10 Hz alpha, and 25 Hz beta. Applying an alpha filter would filter out the signal to output:
+
+$$
+y(t)\approx\sin(2\pi 10t)
+$$
+
+It is then filtered back and forth to prevent phase distortion using 'filtfilt()'.
 
 ### Power Estimation
-The power is then computing squaring the oscillating signal, turning it into a positive magnitude only, then applying the discrete formula:\
-$ P = \frac{1}{N}\sum_{n=1}^{N} x[n]^2 $\
+The power is then computing squaring the oscillating signal, turning it into a positive magnitude only, then applying the discrete formula:
+
+$$
+P = \frac{1}{N}\sum_{n=1}^{N} x[n]^2
+$$
+
 The power is then added and averaged across bands to get a rough estimate of the band strength in the brain.
-$ P_{band}=\frac{1}{C}\sum_{c=1}^{C} P_C $, with $C=$ number of channels. This data is still raw EEG input, so it is not stable, thus it has to be normalized.
+
+$$
+P_{band}=\frac{1}{C}\sum_{c=1}^{C} P_c
+$$
+
+...where $C=$ number of channels.
+
+This data is still raw EEG input, so it is not stable, thus it has to be normalized.
 ### Normalization
 Using a 30-second window and getting the minimum and maximum, the 
 value is normalized with the equation for min-max normalization, which maps values from $0≤x_{norm}≤1$. The equation is as follows:\
