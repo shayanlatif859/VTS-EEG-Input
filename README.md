@@ -124,6 +124,7 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC11219808/ ~ Redwan SM, Uddin MP, Ulhaq 
 - Relative band power metrics
 - Artifact rejection and blink filtering
 - PyQt configuration interface
+- Mapping of EEG states to conditions with relevant research
 - Temporal smoothing and hysteresis
 
 
