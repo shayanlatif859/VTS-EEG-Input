@@ -117,6 +117,8 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC12384336/ ~ Serna B, Salazar R, Alonso-
 
 https://pmc.ncbi.nlm.nih.gov/articles/PMC11219808/ ~ Redwan SM, Uddin MP, Ulhaq A, Sharif MI, Krishnamoorthy G. Power spectral density-based resting-state EEG classification of first-episode psychosis. Sci Rep. 2024 Jul 2;14(1):15154. doi: 10.1038/s41598-024-66110-0. PMID: 38956297; PMCID: PMC11219808.
 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC11378327/ ~ Cherenfant M, Chandanathil M, Robinson RE, Millis RM. Prefrontal, Frontal, and Temporal Theta EEG Asymmetries and Self-Reports of Emotional Regulation. Cureus. 2024 Sep 6;16(9):e68771. doi: 10.7759/cureus.68771. PMID: 39246638; PMCID: PMC11378327.
+
 ## Future Work
 
 - Per-electrode spectral outputs
