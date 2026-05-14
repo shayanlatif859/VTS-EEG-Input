@@ -91,7 +91,6 @@ Run a synthetic board:
 python input_and_simulator_average.py --verbose --synthetic
 ```
 Or run a CSV file from either Muse Direct or Muse Monitor:
-Run a synthetic board:
 ```bash
 python input_and_simulator_average.py --csv '{CSV DIRECTORY HERE}' --verbose  
 ```
