@@ -133,4 +133,6 @@ Below is a video demonstration of the "_average" scripts being ran with a synthe
 
 https://github.com/user-attachments/assets/031c560f-9e0e-423c-8ac9-5be87f100114
 
+Note: This demonstration was done using the older code. If you want to try this code in its current form, run gui.py in the gui subfolder to use a rudimentary GUI. A proper GUI is coming soon.
+
 
