@@ -118,6 +118,8 @@ https://pmc.ncbi.nlm.nih.gov/articles/PMC11219808/ ~ Redwan SM, Uddin MP, Ulhaq 
 
 https://pmc.ncbi.nlm.nih.gov/articles/PMC11378327/ ~ Cherenfant M, Chandanathil M, Robinson RE, Millis RM. Prefrontal, Frontal, and Temporal Theta EEG Asymmetries and Self-Reports of Emotional Regulation. Cureus. 2024 Sep 6;16(9):e68771. doi: 10.7759/cureus.68771. PMID: 39246638; PMCID: PMC11378327.
 
+https://pubmed.ncbi.nlm.nih.gov/29243266/ ~ Allen JJB, Keune PM, Schönenberg M, Nusslock R. Frontal EEG alpha asymmetry and emotion: From neural underpinnings and methodological considerations to psychopathology and social cognition. Psychophysiology. 2018 Jan;55(1). doi: 10.1111/psyp.13028. PMID: 29243266.
+
 ## Future Work
 
 - Per-electrode spectral outputs
