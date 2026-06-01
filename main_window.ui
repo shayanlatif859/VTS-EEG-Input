@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MuseBridge</class>
+ <widget class="QMainWindow" name="MuseBridge">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1215</width>
+    <height>861</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MuseBridge</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="mainLayout">
+    <item>
+     <layout class="QHBoxLayout" name="topBar">
+      <item>
+       <widget class="QLabel" name="jsonLabel">
+        <property name="text">
+         <string>Rules file:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="jsonPathEdit">
+        <property name="placeholderText">
+         <string>rules.json</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="browseJsonButton">
+        <property name="text">
+         <string>Browse</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="loadButton">
+        <property name="text">
+         <string>Load</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="saveButton">
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="fetchVTSButton">
+        <property name="text">
+         <string>Fetch from VTS</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="vtsStatusLabel">
+        <property name="text">
+         <string>VTS: not connected</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QSplitter" name="splitter">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>1</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Orientation::Horizontal</enum>
+      </property>
+      <widget class="QWidget" name="leftPanel">
+       <layout class="QVBoxLayout" name="leftLayout">
+        <item>
+         <widget class="QLabel" name="rulesLabel">
+          <property name="text">
+           <string>Rules</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QListWidget" name="rulesListWidget"/>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="ruleButtonsLayout">
+          <item>
+           <widget class="QPushButton" name="addRuleButton">
+            <property name="text">
+             <string>+ Add Rule</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="deleteRuleButton">
+            <property name="text">
+             <string>Delete</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="editorPanel">
+       <layout class="QVBoxLayout" name="editorOuterLayout">
+        <item>
+         <layout class="QHBoxLayout" name="ruleNameLayout">
+          <item>
+           <widget class="QLabel" name="ruleNameLabel">
+            <property name="text">
+             <string>Rules editor</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="conditionsGroup">
+          <property name="title">
+           <string>Conditions (ALL must be true)</string>
+          </property>
+          <layout class="QVBoxLayout" name="conditionsLayout">
+           <item>
+            <widget class="QPushButton" name="addConditionButton">
+             <property name="text">
+              <string>+ Add Condition</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="outputsGroup">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="title">
+           <string>Outputs</string>
+          </property>
+          <layout class="QVBoxLayout" name="outputsOuterLayout">
+           <item>
+            <widget class="QScrollArea" name="outputsScrollArea">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>1</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="widgetResizable">
+              <bool>true</bool>
+             </property>
+             <widget class="QWidget" name="outputsScrollContents">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>489</width>
+                <height>454</height>
+               </rect>
+              </property>
+              <layout class="QVBoxLayout" name="outputsLayout"/>
+             </widget>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="addOutputButton">
+             <property name="text">
+              <string>+ Add Output</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="launchGroup">
+      <property name="title">
+       <string>Launch</string>
+      </property>
+      <layout class="QHBoxLayout" name="launchLayout">
+       <item>
+        <widget class="QGroupBox" name="bridgeGroup">
+         <property name="title">
+          <string>bridge.py</string>
+         </property>
+         <layout class="QHBoxLayout" name="bridgeLayout">
+          <item>
+           <widget class="QPushButton" name="bridgeStartButton">
+            <property name="text">
+             <string>Start</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="bridgeStopButton">
+            <property name="text">
+             <string>Stop</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="bridgeStatusLabel">
+            <property name="text">
+             <string>stopped</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="simGroup">
+         <property name="title">
+          <string>musesimulator.py</string>
+         </property>
+         <layout class="QHBoxLayout" name="simLayout">
+          <item>
+           <widget class="QRadioButton" name="simLiveRadio">
+            <property name="text">
+             <string>Live Muse</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="SyntheticRadio">
+            <property name="text">
+             <string>Synthetic</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="simCsvRadio">
+            <property name="text">
+             <string>CSV</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="simCsvEdit">
+            <property name="visible">
+             <bool>false</bool>
+            </property>
+            <property name="placeholderText">
+             <string>CSV path…</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="simCsvBrowseButton">
+            <property name="visible">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string>Browse</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="simStartButton">
+            <property name="text">
+             <string>Start</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="simStopButton">
+            <property name="text">
+             <string>Stop</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="simStatusLabel">
+            <property name="text">
+             <string>stopped</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1215</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionLoad"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSaveAs"/>
+   </widget>
+   <widget class="QMenu" name="menuNote">
+    <property name="title">
+     <string>Note</string>
+    </property>
+    <addaction name="separator"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuNote"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionLoad">
+   <property name="text">
+    <string>Load</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionSaveAs">
+   <property name="text">
+    <string>Save As…</string>
+   </property>
+  </action>
+  <action name="actionIm_not_a_frontend_dev">
+   <property name="text">
+    <string>I'm not a frontend dev</string>
+   </property>
+  </action>
+  <action name="actionSo_any_help_is_welcome">
+   <property name="text">
+    <string>So any help is welcome</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

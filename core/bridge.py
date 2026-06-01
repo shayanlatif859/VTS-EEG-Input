@@ -16,6 +16,9 @@ Headless/CLI entry point at the bottom: `python bridge.py`
 Things like def function(int_value: int="int",string_value: string="str") -> float:
 """
 
+
+# 𓅓
+
 import json
 import threading
 import time
@@ -324,18 +327,36 @@ class VTSBridge:
 
                 self._update_derived()
 
-    # Recompute FAA and temporal alpha asymmetry. Must be called inside self._brain_lock.
+    # Recompute FAA, arousal, and temporal alpha asymmetry. Must be called inside self._brain_lock.
+    # In a MUSE headset, if a_af8 (right frontal lobe alpha) if greater than a_af7 (left frontal lobe alpha),
+    # The FAA is positive, valence is negative. This is correlated to withdrawal motivation
+    # If FAA is negative, valence is positive. This is correlated with positive motivation.
     def _update_derived(self):
-        af7  = self._brain.get("alpha/AF7")
-        af8  = self._brain.get("alpha/AF8")
-        tp9  = self._brain.get("alpha/TP9")
-        tp10 = self._brain.get("alpha/TP10")
+        a_af7 = self._brain.get("alpha/AF7")
+        a_af8 = self._brain.get("alpha/AF8")
+        a_tp9 = self._brain.get("alpha/TP9")
+        a_tp10 = self._brain.get("alpha/TP10")
 
-        if af7 is not None and af8 is not None:
-            self._brain["faa"] = af7 - af8
 
-        if tp9 is not None and tp10 is not None:
-            self._brain["taa"] = tp9 - tp10
+        if a_af7 is not None and a_af8 is not None:
+            self._brain["faa"] = a_af7 - a_af8
+
+        if a_tp9 is not None and a_tp10 is not None:
+            self._brain["taa"] = a_tp9 - a_tp10
+
+        # Valence: direct alias for FAA (negative = positive/approach)
+        if "faa" in self._brain:
+            self._brain["valence"] = self._brain["faa"]
+
+
+        arousal_keys = [key for key in self._brain
+                        if key.startswith("beta/") or key.startswith("gamma/")]
+
+        # Arousal: mean of beta and gamma across all available sensors
+        # Originally, the plan was to use the Pope ratio. But this would likely not work as well with normalized values.
+        if arousal_keys:
+            self._brain["arousal"] = sum(self._brain[key] for key in arousal_keys)/len(arousal_keys)
+
 
     # =========================
     # WEBSOCKET RECEIVER ~ Keeps websocket alive by reading from it, reconnecting on failure.
@@ -365,7 +386,7 @@ class VTSBridge:
 
             except Exception as e:
                 if not self._running:
-                    break  # clean shutdown, not an error
+                    break  # clean shutdown, not an error anymore (used to use raise)
                 print(f"WebSocket lost: {e} — reconnecting")
                 try:
                     self._ws.close()
@@ -391,11 +412,11 @@ class VTSBridge:
             try:
                 # Evaluate rules > outputs + active rule list
                 outputs, active = self._evaluate_rules(brain)
-                active_set      = set(active)
+                active_set = set(active)
 
                 # Find rules that just turned on or just turned off
                 just_entered = active_set - self._previous_active_rules
-                just_exited  = self._previous_active_rules - active_set
+                just_exited = self._previous_active_rules - active_set
 
                 # Apply outputs (parameters, expressions, hotkeys)
                 self._apply_outputs(outputs, brain, just_entered, just_exited)

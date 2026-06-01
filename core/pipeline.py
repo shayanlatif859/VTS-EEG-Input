@@ -456,7 +456,7 @@ class EEGPipeline:
         normalize = make_normalizer(rate)
 
         # Carry-forward for sparse rows. If a band is missing in a row, reuse the last valid value
-        last    = {b: 0.5 for b in BANDS}
+        last = {b: 0.5 for b in BANDS}
         skipped = 0
 
         if self.config.get("verbose"):
@@ -546,7 +546,7 @@ class EEGPipeline:
             return np.mean(scores) <= 3.5 if scores else True
 
         normalize = make_normalizer(rate)
-        skipped   = 0
+        skipped = 0
 
         # Carry-forward holds the last known good values for sparse rows
         last = {b: 0.5 for b in BANDS}

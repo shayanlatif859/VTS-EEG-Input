@@ -192,9 +192,9 @@ class MuseBridgeGUI(QWidget):
     # =========================
     def _start_pipeline(self):
         config = {
-            "csv":       None,
-            "synthetic": True,    # change to False to try live Muse
-            "verbose":   False,
+            "csv": None,
+            "synthetic": True,      # change to False to try live Muse
+            "verbose": False,
         }
         try:
             self._pipeline = EEGPipeline(config)
