@@ -84,6 +84,7 @@ class MuseBridgeWindow(QMainWindow):
         # BRAIN DISPLAY ~ Created once and inserted into the right panel of the splitter, above the rules editor area.
         # =========================
         # TODO: self._brain_display = BrainDisplay() !
+        self._state_relay = _StateRelay()
 
 
         # =========================
