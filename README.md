@@ -135,6 +135,6 @@ Below is a video demonstration of the "_average" scripts being ran with a synthe
 
 https://github.com/user-attachments/assets/031c560f-9e0e-423c-8ac9-5be87f100114
 
-Note: This demonstration was done using the older code. If you want to try this code in its current form, run gui.py in the gui subfolder to use a rudimentary GUI. A proper GUI is coming soon.
+Note: This demonstration was done using the older code. If you want to try this code in its current form, run main.py to run the GUI.
 
-
+<img width="1200" height="707" alt="_GUI_SCREENSHOT_" src="https://github.com/user-attachments/assets/916791d7-03fe-4ac9-9d21-25705e4baa8d" />
