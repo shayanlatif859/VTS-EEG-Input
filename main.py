@@ -1,5 +1,5 @@
 """
-main.py — MuseBridge entry point.
+Entry point for MuseBridge
 
 Creates the QApplication and shows the main window.
 All application logic lives in gui/main_window.py.
@@ -32,3 +32,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
