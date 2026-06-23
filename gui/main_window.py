@@ -23,13 +23,13 @@ from PySide6.QtUiTools import QUiLoader
 
 from core.pipeline     import EEGPipeline
 from core.bridge       import VTSBridge
-from gui.rules_editor  import RulesEditor
+from gui.rules_editor  import RulesEditorPanel
 # TODO: from gui.brain_display import BrainDisplay !
 
 
 
 # =========================
-# STATE RELAY ~ A lightweight QObject whose only job is carrying the
+# STATE RELAY ~ Lightweight QObject whose only job is carrying the
 # state dict from a background thread to the main (GUI) thread safely.
 #
 # Qt signal/slot connections that cross threads are automatically queued with
@@ -86,12 +86,11 @@ class MuseBridgeWindow(QMainWindow):
         # TODO: self._brain_display = BrainDisplay() !
         self._state_relay = _StateRelay()
 
-
         # =========================
         # RULES EDITOR ~ Passes the existing QListWidget from the .ui file so the list stays in its Designer-assigned position on the left panel.
         # The editor panel widget is inserted into editorOuterLayout below the brain display, replacing the static Designer placeholders.
         # =========================
-        self._rules_editor = RulesEditor(self.ui.rulesListWidget)
+        self._rules_editor = RulesEditorPanel(self.ui.rulesListWidget)
 
         # Remove the static Designer placeholders (rule name row, conditions group, outputs group) and replace with the live editor panel.
         while self.ui.editorOuterLayout.count() > 1:
@@ -113,7 +112,7 @@ class MuseBridgeWindow(QMainWindow):
 
         # =========================
         # INITIAL UI STATE ~ Disable Stop buttons until something is running.
-        # CSV path fields start hidden — they appear when CSV radio is selected.
+        # CSV path fields start hidden—they appear when CSV radio is selected.
         # =========================
         self._set_pipeline_running(False)
         self._set_bridge_running(False)
@@ -225,7 +224,7 @@ class MuseBridgeWindow(QMainWindow):
     # the config dict that EEGPipeline expects.
     # Adding a new setting to the UI only requires adding one line here.
     # =========================
-    def _build_pipeline_config(self):
+    def _build_pipeline_config(self) -> dict:
         using_csv = self.ui.simCsvRadio.isChecked()
         using_synthetic = self.ui.SyntheticRadio.isChecked()
 
@@ -245,7 +244,7 @@ class MuseBridgeWindow(QMainWindow):
 
     # =========================
     # JSON BROWSE ~ Opens a file dialog and puts the chosen path in the text field.
-    # Does not load the file yet, the user still clicks Load.
+    # Does not load the file yet, the user still clicks Load, which calls _load_rules().
     # =========================
     def _browse_json(self):
         path, _ = QFileDialog.getOpenFileName(
@@ -262,6 +261,7 @@ class MuseBridgeWindow(QMainWindow):
     def _load_rules(self):
         path = self.ui.jsonPathEdit.text().strip() or "rules.json"
 
+        # Read "rules" in JSON file—rules is saved as a list.
         try:
             with open(path) as f:
                 data = json.load(f)
@@ -297,6 +297,7 @@ class MuseBridgeWindow(QMainWindow):
         path, _ = QFileDialog.getSaveFileName(
             self, "Save Rules As", "", "JSON Files (*.json)"
         )
+
         if path:
             self.ui.jsonPathEdit.setText(path)
             self._write_rules_to(path)
@@ -307,15 +308,18 @@ class MuseBridgeWindow(QMainWindow):
     # =========================
     def _write_rules_to(self, path):
         rules = self._get_current_rules()
+
         if not rules:
             self.ui.statusbar.showMessage("Nothing to save, no rules loaded", 3000)
             return
+
         try:
             with open(path, "w") as f:
                 json.dump({"rules": rules}, f, indent=2)
             self.ui.statusbar.showMessage(f"Saved to {path}", 3000)
             # Clear the unsaved-changes marker from the title
             self.setWindowTitle(self.windowTitle().rstrip(" *"))
+
         except Exception as e:
             self.ui.statusbar.showMessage(f"Save failed: {e}", 5000)
 

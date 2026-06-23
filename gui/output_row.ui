@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>OutputRow</class>
+ <widget class="QWidget" name="OutputRow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>989</width>
+    <height>382</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="outerLayout">
+   <item>
+    <layout class="QHBoxLayout" name="typeRow">
+     <item>
+      <layout class="QVBoxLayout" name="typeCol">
+       <item>
+        <widget class="QLabel" name="typeLabel">
+         <property name="text">
+          <string>type</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="typeCombo"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <spacer name="headerSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="deleteBtn">
+       <property name="maximumSize">
+        <size>
+         <width>22</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>x</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QWidget" name="paramWidget" native="true">
+     <layout class="QHBoxLayout" name="paramLayout">
+      <item>
+       <layout class="QVBoxLayout" name="paramNameCol">
+        <item>
+         <widget class="QLabel" name="paramLbl">
+          <property name="text">
+           <string>param</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="paramName">
+          <property name="placeholderText">
+           <string>EyeOpenLeft</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="modeCol">
+        <item>
+         <widget class="QLabel" name="modeLbl">
+          <property name="text">
+           <string>mode</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="paramMode"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QWidget" name="fixedWidget" native="true">
+        <layout class="QVBoxLayout" name="fixedLayout">
+         <item>
+          <widget class="QLabel" name="fixedLbl">
+           <property name="text">
+            <string>value</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="fixedValue"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="sourceWidget" native="true">
+        <layout class="QHBoxLayout" name="sourceLayout">
+         <item>
+          <layout class="QVBoxLayout" name="srcBandCol">
+           <item>
+            <widget class="QLabel" name="srcBandLbl">
+             <property name="text">
+              <string>source band</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="sourceBand"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="srcSensorCol">
+           <item>
+            <widget class="QLabel" name="srcSensorLbl">
+             <property name="text">
+              <string>sensor</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="sourceSensor"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="scaleCol">
+           <item>
+            <widget class="QLabel" name="scaleLbl">
+             <property name="text">
+              <string>scale</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="scaleSpinbox"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="offsetCol">
+           <item>
+            <widget class="QLabel" name="offsetLbl">
+             <property name="text">
+              <string>offset</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QDoubleSpinBox" name="offsetSpinbox"/>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <spacer name="paramSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="exprWidget" native="true">
+     <layout class="QHBoxLayout" name="exprLayout">
+      <item>
+       <layout class="QVBoxLayout" name="exprCol">
+        <item>
+         <widget class="QLabel" name="exprLbl">
+          <property name="text">
+           <string>expression file</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="exprCombo">
+          <property name="editable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="exprSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="hotkeyWidget" native="true">
+     <layout class="QHBoxLayout" name="hotkeyLayout">
+      <item>
+       <layout class="QVBoxLayout" name="hotkeyIdCol">
+        <item>
+         <widget class="QLabel" name="hotkeyLbl">
+          <property name="text">
+           <string>hotkey ID</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="hotkeyCombo">
+          <property name="editable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="cooldownCol">
+        <item>
+         <widget class="QLabel" name="cooldownLbl">
+          <property name="text">
+           <string>cooldown (s)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="cooldownSpinbox"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="hotkeySpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
