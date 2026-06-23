@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1215</width>
-    <height>861</height>
+    <width>1045</width>
+    <height>708</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -93,7 +93,7 @@
        <enum>Qt::Orientation::Horizontal</enum>
       </property>
       <widget class="QWidget" name="leftPanel">
-       <layout class="QVBoxLayout" name="leftLayout">
+       <layout class="QVBoxLayout" name="rulesOuterLayout">
         <item>
          <widget class="QLabel" name="rulesLabel">
           <property name="text">
@@ -136,68 +136,6 @@
            </widget>
           </item>
          </layout>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="conditionsGroup">
-          <property name="title">
-           <string>Conditions (ALL must be true)</string>
-          </property>
-          <layout class="QVBoxLayout" name="conditionsLayout">
-           <item>
-            <widget class="QPushButton" name="addConditionButton">
-             <property name="text">
-              <string>+ Add Condition</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="outputsGroup">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>1</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="title">
-           <string>Outputs</string>
-          </property>
-          <layout class="QVBoxLayout" name="outputsOuterLayout">
-           <item>
-            <widget class="QScrollArea" name="outputsScrollArea">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="widgetResizable">
-              <bool>true</bool>
-             </property>
-             <widget class="QWidget" name="outputsScrollContents">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>489</width>
-                <height>454</height>
-               </rect>
-              </property>
-              <layout class="QVBoxLayout" name="outputsLayout"/>
-             </widget>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="addOutputButton">
-             <property name="text">
-              <string>+ Add Output</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
         </item>
        </layout>
       </widget>
@@ -349,7 +287,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1215</width>
+     <width>1045</width>
      <height>34</height>
     </rect>
    </property>
