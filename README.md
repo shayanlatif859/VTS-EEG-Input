@@ -129,6 +129,7 @@ https://pubmed.ncbi.nlm.nih.gov/29243266/ ~ Allen JJB, Keune PM, Schönenberg M,
 - PyQt configuration interface
 - Mapping of EEG states to conditions with relevant research
 - Temporal smoothing and hysteresis
+- Easier GUI to use
 
 ## Demonstration
 Below is a video demonstration of the "_average" scripts being ran with a synthetic 16-channel input, which uses oscillating signals. This is not an accurate brain signal, and is best used for testing the filtering part of the script. For demonstration purposes, the JSON files have been adjusted to be more sensitive, letting us see how the model may be configured to move based on parameters, hotkey inputs, and expressions that may be programmed with the model.
