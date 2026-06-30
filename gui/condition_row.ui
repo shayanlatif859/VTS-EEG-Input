@@ -6,96 +6,77 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>809</width>
-    <height>524</height>
+    <width>670</width>
+    <height>55</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
-   <item>
-    <layout class="QVBoxLayout" name="bandCol">
-     <item>
-      <widget class="QLabel" name="bandLabel">
-       <property name="text">
-        <string>band</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="bandCombo"/>
-     </item>
-    </layout>
+  <layout class="QGridLayout" name="rowGrid">
+
+   <!-- Row 0: labels -->
+   <item row="0" column="0">
+    <widget class="QLabel" name="bandLabel">
+     <property name="text"><string>band</string></property>
+    </widget>
    </item>
-   <item>
-    <layout class="QVBoxLayout" name="sensorCol">
-     <item>
-      <widget class="QLabel" name="sensorLabel">
-       <property name="text">
-        <string>sensor</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="sensorCombo"/>
-     </item>
-    </layout>
+   <item row="0" column="1">
+    <widget class="QLabel" name="sensorLabel">
+     <property name="text"><string>sensor</string></property>
+    </widget>
    </item>
-   <item>
-    <layout class="QVBoxLayout" name="opCol">
-     <item>
-      <widget class="QLabel" name="opLabel">
-       <property name="text">
-        <string>op</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="opCombo"/>
-     </item>
-    </layout>
+   <item row="0" column="2">
+    <widget class="QLabel" name="opLabel">
+     <property name="text"><string>op</string></property>
+    </widget>
    </item>
-   <item>
-    <layout class="QVBoxLayout" name="valueCol">
-     <item>
-      <widget class="QLabel" name="valueLabel">
-       <property name="text">
-        <string>value</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QDoubleSpinBox" name="valueSpinbox"/>
-     </item>
-    </layout>
+   <item row="0" column="3">
+    <widget class="QLabel" name="valueLabel">
+     <property name="text"><string>value</string></property>
+    </widget>
    </item>
-   <item>
+
+   <!-- Row 1: controls -->
+   <item row="1" column="0">
+    <widget class="QComboBox" name="bandCombo">
+     <property name="minimumWidth"><number>80</number></property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="sensorCombo">
+     <property name="minimumWidth"><number>70</number></property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QComboBox" name="opCombo">
+     <property name="minimumWidth"><number>55</number></property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QDoubleSpinBox" name="valueSpinbox">
+     <property name="minimumWidth"><number>70</number></property>
+    </widget>
+   </item>
+
+   <!-- Spacer + delete -->
+   <item row="1" column="4">
     <spacer name="rowSpacer">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
-     </property>
+     <property name="orientation"><enum>Qt::Orientation::Horizontal</enum></property>
      <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
+      <size><width>40</width><height>20</height></size>
      </property>
     </spacer>
    </item>
-   <item>
+   <item row="0" column="5" rowspan="2">
     <widget class="QPushButton" name="deleteBtn">
      <property name="maximumSize">
-      <size>
-       <width>22</width>
-       <height>22</height>
-      </size>
+      <size><width>22</width><height>22</height></size>
      </property>
-     <property name="text">
-      <string>x</string>
-     </property>
+     <property name="text"><string>x</string></property>
     </widget>
    </item>
+
   </layout>
  </widget>
  <resources/>

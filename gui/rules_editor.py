@@ -9,6 +9,7 @@ OPS = ["<", ">", "<=", ">=", "=="]
 
 UI_DIR = os.path.dirname(__file__)
 
+# ...Comments will be added later.
 
 # =========================
 # CONDITION ROW
@@ -93,14 +94,66 @@ class OutputRow(QWidget):
         self._on_type_changed("parameter")
         self._on_mode_changed("source")
 
+    # =========================
+    # Revised with HBoxLayout GUI
+    # =========================
+
+    @property
+    def _param_cols(self):
+        # Always visible when type == parameter
+        return [self.ui.paramLbl, self.ui.paramName,
+                self.ui.modeLbl, self.ui.paramMode]
+
+    @property
+    def _fixed_cols(self):
+        return [self.ui.fixedLbl, self.ui.fixedValue]
+
+    @property
+    def _source_cols(self):
+        return [self.ui.srcBandLbl, self.ui.sourceBand,
+                self.ui.srcSensorLbl, self.ui.sourceSensor,
+                self.ui.scaleLbl, self.ui.scaleSpinbox,
+                self.ui.offsetLbl, self.ui.offsetSpinbox]
+
+    @property
+    def _expr_cols(self):
+        return [self.ui.exprLbl, self.ui.exprCombo]
+
+    @property
+    def _hotkey_cols(self):
+        return [self.ui.hotkeyLbl, self.ui.hotkeyCombo,
+                self.ui.cooldownLbl, self.ui.cooldownSpinbox]
+
+    @property
+    def _all_type_cols(self):
+        return self._param_cols + self._fixed_cols + self._source_cols \
+            + self._expr_cols + self._hotkey_cols
+
     def _on_type_changed(self, t: str):
-        self.ui.paramWidget.setVisible(t == "parameter")
-        self.ui.exprWidget.setVisible(t == "expression")
-        self.ui.hotkeyWidget.setVisible(t == "hotkey")
+        # Hide everything except type of interest
+        for w in self._all_type_cols:
+            w.setVisible(False)
+
+        if t == "parameter":
+            for w in self._param_cols:
+                w.setVisible(True)
+            # Also apply current mode visibility
+            self._on_mode_changed(self.ui.paramMode.currentText())
+
+        elif t == "expression":
+            for w in self._expr_cols:
+                w.setVisible(True)
+
+        elif t == "hotkey":
+            for w in self._hotkey_cols:
+                w.setVisible(True)
 
     def _on_mode_changed(self, mode: str):
-        self.ui.fixedWidget.setVisible(mode == "fixed")
-        self.ui.sourceWidget.setVisible(mode == "source")
+        # Only relevant when type == parameter
+        for w in self._fixed_cols:
+            w.setVisible(mode == "fixed")
+        for w in self._source_cols:
+            w.setVisible(mode == "source")
 
     def set_vts_assets(self, expressions: list[str], hotkeys: list[dict]):
         cur_expr = self.ui.exprCombo.currentText()
@@ -353,6 +406,7 @@ class RulesEditorPanel(QWidget):
         row.deleteLater()
         self._output_rows.remove(row)
         self._on_editor_changed()
+
 
 # =========================
 # HELPER
