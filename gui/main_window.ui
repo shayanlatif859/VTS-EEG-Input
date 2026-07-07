@@ -202,7 +202,7 @@ QPushButton:pressed {background-color: #245ab3; padding-top: 7px; padding-bottom
     <item>
      <widget class="QGroupBox" name="launchGroup">
       <property name="title">
-       <string>Launch</string>
+       <string>Launcher</string>
       </property>
       <layout class="QHBoxLayout" name="launchLayout">
        <item>
@@ -211,7 +211,7 @@ QPushButton:pressed {background-color: #245ab3; padding-top: 7px; padding-bottom
           <string notr="true">background-color: #ffffff</string>
          </property>
          <property name="title">
-          <string>bridge.py</string>
+          <string>Connect to VTS</string>
          </property>
          <layout class="QHBoxLayout" name="bridgeLayout">
           <item>
@@ -271,7 +271,7 @@ QPushButton:pressed {background-color: #245ab3; padding-top: 7px; padding-bottom
           <string notr="true">background-color: #ffffff</string>
          </property>
          <property name="title">
-          <string>musesimulator.py</string>
+          <string>Run data stream</string>
          </property>
          <layout class="QHBoxLayout" name="simLayout">
           <item>
