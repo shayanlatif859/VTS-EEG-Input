@@ -3,13 +3,12 @@ from PySide6.QtCore import Signal, QFile
 from PySide6.QtUiTools import QUiLoader
 import os
 
-BANDS = ["delta", "theta", "alpha", "beta", "gamma", "faa", "valence", "arousal"]
+BANDS   = ["delta", "theta", "alpha", "beta", "gamma", "faa", "valence", "arousal"]
 SENSORS = ["mean", "AF7", "AF8", "TP9", "TP10"]
-OPS = ["<", ">", "<=", ">=", "=="]
+OPS     = ["<", ">", "<=", ">=", "=="]
 
 UI_DIR = os.path.dirname(__file__)
 
-# ...Comments will be added later.
 
 # =========================
 # CONDITION ROW
@@ -40,8 +39,8 @@ class ConditionRow(QWidget):
 
     def to_dict(self) -> dict:
         d = {
-            "band": self.ui.bandCombo.currentText(),
-            "op": self.ui.opCombo.currentText(),
+            "band":  self.ui.bandCombo.currentText(),
+            "op":    self.ui.opCombo.currentText(),
             "value": round(self.ui.valueSpinbox.value(), 4),
         }
         if self.ui.sensorCombo.currentText() != "mean":
@@ -49,14 +48,16 @@ class ConditionRow(QWidget):
         return d
 
     def from_dict(self, d: dict):
-        _set_combo(self.ui.bandCombo, d.get("band", "alpha"))
+        _set_combo(self.ui.bandCombo,   d.get("band",   "alpha"))
         _set_combo(self.ui.sensorCombo, d.get("sensor", "mean"))
-        _set_combo(self.ui.opCombo, d.get("op", ">"))
+        _set_combo(self.ui.opCombo,     d.get("op",     ">"))
         self.ui.valueSpinbox.setValue(float(d.get("value", 0.5)))
 
 
 # =========================
 # OUTPUT ROW
+# All columns live in one flat QHBoxLayout so every label and control  shares the same vertical baseline.
+# Type-switching caused misalignment issues earlier.
 # =========================
 class OutputRow(QWidget):
     delete_requested = Signal(object)
@@ -95,7 +96,9 @@ class OutputRow(QWidget):
         self._on_mode_changed("source")
 
     # =========================
-    # Revised with HBoxLayout GUI
+    # Column groups per type.
+    # Each returns the widgets that should be visible for that state.
+    # Hiding a widget in a flat HBoxLayout collapses its space cleanly.
     # =========================
 
     @property
@@ -127,10 +130,10 @@ class OutputRow(QWidget):
     @property
     def _all_type_cols(self):
         return self._param_cols + self._fixed_cols + self._source_cols \
-            + self._expr_cols + self._hotkey_cols
+             + self._expr_cols + self._hotkey_cols
 
     def _on_type_changed(self, t: str):
-        # Hide everything except type of interest
+        # Hide everything then show only what belongs to this type
         for w in self._all_type_cols:
             w.setVisible(False)
 
@@ -149,7 +152,7 @@ class OutputRow(QWidget):
                 w.setVisible(True)
 
     def _on_mode_changed(self, mode: str):
-        # Only relevant when type == parameter
+        # Only relevant when type == parameter; harmless to call otherwise
         for w in self._fixed_cols:
             w.setVisible(mode == "fixed")
         for w in self._source_cols:
@@ -157,7 +160,7 @@ class OutputRow(QWidget):
 
     def set_vts_assets(self, expressions: list[str], hotkeys: list[dict]):
         cur_expr = self.ui.exprCombo.currentText()
-        cur_hid = None
+        cur_hid  = None
         idx = self.ui.hotkeyCombo.currentIndex()
         if 0 <= idx < len(self._hotkey_ids):
             cur_hid = self._hotkey_ids[idx]
@@ -186,13 +189,13 @@ class OutputRow(QWidget):
                 d["source"] = self.ui.sourceBand.currentText()
                 if self.ui.sourceSensor.currentText() != "mean":
                     d["sensor"] = self.ui.sourceSensor.currentText()
-                d["scale"] = round(self.ui.scaleSpinbox.value(), 4)
+                d["scale"]  = round(self.ui.scaleSpinbox.value(), 4)
                 d["offset"] = round(self.ui.offsetSpinbox.value(), 4)
             return d
 
         if t == "expression":
             return {
-                "type": "expression",
+                "type":       "expression",
                 "expression": self.ui.exprCombo.currentText().strip(),
             }
 
@@ -204,9 +207,9 @@ class OutputRow(QWidget):
                 else self.ui.hotkeyCombo.currentText().strip()
             )
             return {
-                "type": "hotkey",
+                "type":      "hotkey",
                 "hotkey_id": hid,
-                "cooldown": round(self.ui.cooldownSpinbox.value(), 1),
+                "cooldown":  round(self.ui.cooldownSpinbox.value(), 1),
             }
 
         return {}
@@ -224,9 +227,9 @@ class OutputRow(QWidget):
                 self._on_mode_changed("fixed")
             else:
                 _set_combo(self.ui.paramMode, "source")
-                _set_combo(self.ui.sourceBand, d.get("source", "alpha"))
+                _set_combo(self.ui.sourceBand,   d.get("source", "alpha"))
                 _set_combo(self.ui.sourceSensor, d.get("sensor", "mean"))
-                self.ui.scaleSpinbox.setValue(float(d.get("scale", 1.0)))
+                self.ui.scaleSpinbox.setValue(float(d.get("scale",  1.0)))
                 self.ui.offsetSpinbox.setValue(float(d.get("offset", 0.0)))
                 self._on_mode_changed("source")
 
@@ -246,6 +249,7 @@ class OutputRow(QWidget):
 # RULES EDITOR PANEL
 # =========================
 class RulesEditorPanel(QWidget):
+
     rules_changed = Signal(list)
 
     def __init__(self, rules_list_widget: QListWidget, parent=None):
@@ -264,14 +268,14 @@ class RulesEditorPanel(QWidget):
         self._list = rules_list_widget
         self._list.currentRowChanged.connect(self._on_row_selected)
 
-        self._rules: list[dict] = []
-        self._current_idx: int = -1
-        self._loading: bool = False
+        self._rules:           list[dict] = []
+        self._current_idx:     int        = -1
+        self._loading:         bool       = False
 
-        self._condition_rows: list[ConditionRow] = []
-        self._output_rows: list[OutputRow] = []
-        self._vts_expressions: list[str] = []
-        self._vts_hotkeys: list[dict] = []
+        self._condition_rows:  list[ConditionRow] = []
+        self._output_rows:     list[OutputRow]    = []
+        self._vts_expressions: list[str]          = []
+        self._vts_hotkeys:     list[dict]         = []
 
         self.ui.addConditionBtn.clicked.connect(self._add_condition)
         self.ui.addOutputBtn.clicked.connect(self._add_output)
@@ -283,7 +287,7 @@ class RulesEditorPanel(QWidget):
 
     def load_rules(self, rules: list):
         self._loading = True
-        self._rules = [dict(r) for r in rules]
+        self._rules   = [dict(r) for r in rules]
 
         self._list.clear()
         for rule in self._rules:
@@ -326,7 +330,7 @@ class RulesEditorPanel(QWidget):
 
     def set_vts_assets(self, expressions: list[str], hotkeys: list[dict]):
         self._vts_expressions = expressions
-        self._vts_hotkeys = hotkeys
+        self._vts_hotkeys     = hotkeys
         for row in self._output_rows:
             row.set_vts_assets(expressions, hotkeys)
 
@@ -349,9 +353,9 @@ class RulesEditorPanel(QWidget):
             return
 
         updated = {
-            "name": self.ui.ruleName.text().strip() or "unnamed",
+            "name":       self.ui.ruleName.text().strip() or "unnamed",
             "conditions": [r.to_dict() for r in self._condition_rows],
-            "outputs": [r.to_dict() for r in self._output_rows],
+            "outputs":    [r.to_dict() for r in self._output_rows],
         }
         self._rules[idx] = updated
 

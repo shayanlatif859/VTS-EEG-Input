@@ -6,150 +6,178 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>989</width>
-    <height>55</height>
+    <width>1345</width>
+    <height>214</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QLineEdit, QComboBox, QDoubleSpinBox {
+    background-color: #ffffff;
+    border: 1px solid #24242b;
+    border-radius: 4px;
+    padding: 4px 8px;
+    selection-background-color: #89b4fa;
+}</string>
+  </property>
   <layout class="QGridLayout" name="rowGrid">
-
-   <!-- Row 0: labels -->
-   <item row="0" column="0">
-    <widget class="QLabel" name="typeLabel">
-     <property name="text"><string>type</string></property>
+   <item row="0" column="10">
+    <widget class="QLabel" name="cooldownLbl">
+     <property name="text">
+      <string>cooldown (s)</string>
+     </property>
     </widget>
    </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="paramLbl">
-     <property name="text"><string>param</string></property>
-    </widget>
+   <item row="1" column="10">
+    <widget class="QDoubleSpinBox" name="cooldownSpinbox"/>
    </item>
    <item row="0" column="2">
     <widget class="QLabel" name="modeLbl">
-     <property name="text"><string>mode</string></property>
+     <property name="text">
+      <string>mode</string>
+     </property>
     </widget>
    </item>
-   <item row="0" column="3">
-    <widget class="QLabel" name="fixedLbl">
-     <property name="text"><string>value</string></property>
+   <item row="0" column="0">
+    <widget class="QLabel" name="typeLabel">
+     <property name="text">
+      <string>type</string>
+     </property>
     </widget>
    </item>
-   <item row="0" column="4">
-    <widget class="QLabel" name="srcBandLbl">
-     <property name="text"><string>source band</string></property>
-    </widget>
-   </item>
-   <item row="0" column="5">
-    <widget class="QLabel" name="srcSensorLbl">
-     <property name="text"><string>sensor</string></property>
-    </widget>
-   </item>
-   <item row="0" column="6">
-    <widget class="QLabel" name="scaleLbl">
-     <property name="text"><string>scale</string></property>
-    </widget>
-   </item>
-   <item row="0" column="7">
-    <widget class="QLabel" name="offsetLbl">
-     <property name="text"><string>offset</string></property>
-    </widget>
+   <item row="1" column="2">
+    <widget class="QComboBox" name="paramMode"/>
    </item>
    <item row="0" column="8">
     <widget class="QLabel" name="exprLbl">
-     <property name="text"><string>expression file</string></property>
-    </widget>
-   </item>
-   <item row="0" column="9">
-    <widget class="QLabel" name="hotkeyLbl">
-     <property name="text"><string>hotkey ID</string></property>
-    </widget>
-   </item>
-   <item row="0" column="10">
-    <widget class="QLabel" name="cooldownLbl">
-     <property name="text"><string>cooldown (s)</string></property>
-    </widget>
-   </item>
-
-   <!-- Row 1: controls -->
-   <item row="1" column="0">
-    <widget class="QComboBox" name="typeCombo">
-     <property name="minimumWidth"><number>100</number></property>
+     <property name="text">
+      <string>expression file</string>
+     </property>
     </widget>
    </item>
    <item row="1" column="1">
     <widget class="QLineEdit" name="paramName">
-     <property name="minimumWidth"><number>120</number></property>
-     <property name="placeholderText"><string>EyeOpenLeft</string></property>
-    </widget>
-   </item>
-   <item row="1" column="2">
-    <widget class="QComboBox" name="paramMode">
-     <property name="minimumWidth"><number>70</number></property>
+     <property name="placeholderText">
+      <string>EyeOpenLeft</string>
+     </property>
     </widget>
    </item>
    <item row="1" column="3">
-    <widget class="QDoubleSpinBox" name="fixedValue">
-     <property name="minimumWidth"><number>70</number></property>
-    </widget>
-   </item>
-   <item row="1" column="4">
-    <widget class="QComboBox" name="sourceBand">
-     <property name="minimumWidth"><number>80</number></property>
-    </widget>
-   </item>
-   <item row="1" column="5">
-    <widget class="QComboBox" name="sourceSensor">
-     <property name="minimumWidth"><number>70</number></property>
-    </widget>
-   </item>
-   <item row="1" column="6">
-    <widget class="QDoubleSpinBox" name="scaleSpinbox">
-     <property name="minimumWidth"><number>65</number></property>
-    </widget>
+    <widget class="QDoubleSpinBox" name="fixedValue"/>
    </item>
    <item row="1" column="7">
-    <widget class="QDoubleSpinBox" name="offsetSpinbox">
-     <property name="minimumWidth"><number>65</number></property>
-    </widget>
+    <widget class="QDoubleSpinBox" name="offsetSpinbox"/>
    </item>
    <item row="1" column="8">
     <widget class="QComboBox" name="exprCombo">
-     <property name="minimumWidth"><number>220</number></property>
-     <property name="editable"><bool>true</bool></property>
+     <property name="editable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="4">
+    <widget class="QComboBox" name="sourceBand"/>
+   </item>
+   <item row="0" column="5">
+    <widget class="QLabel" name="srcSensorLbl">
+     <property name="text">
+      <string>sensor</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QLabel" name="fixedLbl">
+     <property name="text">
+      <string>value</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="6">
+    <widget class="QDoubleSpinBox" name="scaleSpinbox"/>
+   </item>
+   <item row="0" column="7">
+    <widget class="QLabel" name="offsetLbl">
+     <property name="text">
+      <string>offset</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="4">
+    <widget class="QLabel" name="srcBandLbl">
+     <property name="text">
+      <string>source band</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="6">
+    <widget class="QLabel" name="scaleLbl">
+     <property name="text">
+      <string>scale</string>
+     </property>
     </widget>
    </item>
    <item row="1" column="9">
     <widget class="QComboBox" name="hotkeyCombo">
-     <property name="minimumWidth"><number>220</number></property>
-     <property name="editable"><bool>true</bool></property>
+     <property name="editable">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
-   <item row="1" column="10">
-    <widget class="QDoubleSpinBox" name="cooldownSpinbox">
-     <property name="minimumWidth"><number>70</number></property>
-    </widget>
-   </item>
-
-   <!-- Spacer pushes everything left, delete button pins to right -->
    <item row="1" column="11">
     <spacer name="rowSpacer">
-     <property name="orientation"><enum>Qt::Orientation::Horizontal</enum></property>
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
      <property name="sizeHint" stdset="0">
-      <size><width>40</width><height>20</height></size>
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
      </property>
     </spacer>
+   </item>
+   <item row="0" column="9">
+    <widget class="QLabel" name="hotkeyLbl">
+     <property name="text">
+      <string>hotkey ID</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QComboBox" name="typeCombo"/>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="paramLbl">
+     <property name="text">
+      <string>param</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="5">
+    <widget class="QComboBox" name="sourceSensor"/>
    </item>
    <item row="0" column="12" rowspan="2">
     <widget class="QPushButton" name="deleteBtn">
      <property name="maximumSize">
-      <size><width>22</width><height>22</height></size>
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
      </property>
-     <property name="text"><string>x</string></property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {background-color: #fa3939; color: #ffffff; border-radius: 10px;  border: 1px solid #3381ff; padding: 5px 14px;}
+
+QPushButton:hover {background-color: #a82828;}
+
+QPushButton:pressed {background-color: #a82828; padding-top: 7px; padding-bottom: 5px;}</string>
+     </property>
+     <property name="text">
+      <string>X</string>
+     </property>
     </widget>
    </item>
-
   </layout>
  </widget>
  <resources/>

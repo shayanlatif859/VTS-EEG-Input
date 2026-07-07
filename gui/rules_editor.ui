@@ -19,6 +19,9 @@
   <property name="windowTitle">
    <string>Rules Editor</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">color: #636363; font-family: monospace; background: #fae2e1</string>
+  </property>
   <layout class="QVBoxLayout" name="editorVLayout">
    <item>
     <layout class="QHBoxLayout" name="ruleNameLayout">
@@ -31,8 +34,11 @@
      </item>
      <item>
       <widget class="QLineEdit" name="ruleName">
+       <property name="styleSheet">
+        <string notr="true">background: #ffffff</string>
+       </property>
        <property name="placeholderText">
-        <string>(e.g. aroused)</string>
+        <string>(e.g. arousal, valence)</string>
        </property>
       </widget>
      </item>
@@ -75,6 +81,9 @@
         <height>218</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background: #ffffff;</string>
+      </property>
       <layout class="QVBoxLayout" name="conditionsLayout">
        <item>
         <spacer name="conditionsStretch">
@@ -100,6 +109,13 @@
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {background-color: #3381ff; color: #ffffff; border-radius: 10px;  border: 1px solid #3381ff; padding: 5px 14px;}
+
+QPushButton:hover {background-color: #245ab3;}
+
+QPushButton:pressed {background-color: #245ab3; padding-top: 7px; padding-bottom: 5px;}</string>
      </property>
      <property name="text">
       <string>+ Add Condition</string>
@@ -140,8 +156,11 @@
         <x>0</x>
         <y>0</y>
         <width>1024</width>
-        <height>265</height>
+        <height>249</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background: #ffffff</string>
       </property>
       <layout class="QVBoxLayout" name="outputsLayout">
        <item>
@@ -168,6 +187,13 @@
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {background-color: #3381ff; color: #ffffff; border-radius: 10px;  border: 1px solid #3381ff; padding: 5px 14px;}
+
+QPushButton:hover {background-color: #245ab3;}
+
+QPushButton:pressed {background-color: #245ab3; padding-top: 7px; padding-bottom: 5px;}</string>
      </property>
      <property name="text">
       <string>+ Add Output</string>
