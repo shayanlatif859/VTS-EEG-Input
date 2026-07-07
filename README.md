@@ -138,4 +138,4 @@ https://github.com/user-attachments/assets/031c560f-9e0e-423c-8ac9-5be87f100114
 
 Note: This demonstration was done using the older code. If you want to try this code in its current form, run main.py to run the GUI.
 
-<img width="1200" height="707" alt="_GUI_SCREENSHOT_" src="https://github.com/user-attachments/assets/916791d7-03fe-4ac9-9d21-25705e4baa8d" />
+<img width="1096" height="820" alt="Screenshot 2026-07-06 at 10 35 04 PM" src="https://github.com/user-attachments/assets/a7c82612-8f1d-4289-8fdb-6eea6c1be57b" />
