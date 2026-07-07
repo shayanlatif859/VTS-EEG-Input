@@ -142,9 +142,15 @@ Note: This demonstration was done using the older code. If you want to try this 
 
 To use this:
 ~ Ensure API for VTube studio is running
+
 ~ Run bridge.py in the bottom left corner
+
 ~ Go to VTube Studio and confirm connection
+
 ~ Load a JSON file in the header (Just pressing load will load the JSON file that came with the program)
+
 ~ Edit and save the JSON file as you wish using the rules editor
+
 ~ You may use the "Fetch from VTS" button to load in hotkeys and expressions for your selected model
+
 ~ Click on the musesimulator.py menu in the bottom right corner to either run a real MUSE device input, a synthetic 16-channel input, or a .csv recording of a MUSE device
