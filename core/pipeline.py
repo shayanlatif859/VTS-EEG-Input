@@ -21,7 +21,7 @@ import threading
 from pylsl import StreamInfo, StreamOutlet
 from pythonosc.udp_client import SimpleUDPClient
 from brainflow.board_shim import BoardShim, BrainFlowInputParams, BoardIds
-from scipy.signal import butter, filtfilt
+from scipy.signal import butter, filtfilt, sosfilt, sosfilt_zi, welch
 
 
 # =========================
@@ -117,18 +117,43 @@ def make_normalizer(rate):
     return normalize
 
 # =========================
-# BAND POWER ~ Creates a Butterworth bandpass filter, applies it, and returns mean power.
-# Butterworth is designed to have a frequency response as flat as possible in the passband with no ripples.
-# Filtfilt applies the filter forwards and backwards, cancelling phase delay.
-# np.mean(filtered ** 2) calculates Power = amplitude ** 2.
-# Averaging squared amplitude gives mean power.
+# NOTE: Old logic utilizing a butterworth filter applied backwards and forwards is replaced with
+# New logic using Welch PSD (Power Spectral Density), which uses a FFT (Fast Fourier Transform) to decompose the time-domain signal into frequency components
+# Welch then estimates the PSD by squaring just like the previous band_power function, which just squared the filtered signals
+# (It has not been implemented yet)
+# https://tenor.com/view/interstellar-cost-little-maneuver-51years-51-gif-24426899
 # =========================
+
 def band_power(signal, low, high, sample_rate):
     # Nyquist frequency is half the sample rate; frequencies must be normalized against it.
     nyq = sample_rate / 2.0
     b, a = butter(4, [low / nyq, high / nyq], btype="band")
     filtered = filtfilt(b, a, signal)
     return float(np.mean(filtered ** 2))
+
+# =========================
+# COMPUTE BANDS WELCH ~ Uses Welch's method for power spectral density estimation.
+# FFT-based without time-domain based forwards-backwards filtering. Integrates PSD over band frequencies to get FFT.
+# =========================
+# def compute_bands_welch(data, eeg_channels, channel_names, band_ranges, sample_rate) -> dict:
+#     """
+#     Compute band power using Welch PSD estimation.
+#
+#     Args:
+#         data: (n_channels, n_samples) array from board
+#         eeg_channels: list of channel indices to use
+#         channel_names: list of channel name strings
+#         band_ranges: dict of {"band": (low_hz, high_hz)}
+#         sample_rate: sampling frequency in Hz
+#
+#     Returns:
+#         dict with keys like "alpha", "alpha/AF7" etc.
+#     """
+#     result = {}
+#
+#     # Welch parameters
+#     nperseg = sample_rate // 2  # 0.5 second segments (256 samples at 256hz)
+#     noverlap = sample_rate // 4  # 50% overlap
 
 
 # =========================
@@ -156,7 +181,6 @@ def compute_bands_per_sensor(data, eeg_channels, channel_names, band_ranges, sam
             result[f"{band}/{ch_name}"] = power
 
     return result
-
 
 # =========================
 # GET CHANNEL NAMES ~ Returns a list of label strings for the given board's EEG channels.
@@ -389,13 +413,16 @@ class EEGPipeline:
             print_state(state, row_label)
 
     # =========================
+    # This CSV data feature will have to go soon
+    # =========================
+
+    # =========================
     # CSV FORMAT DETECTION ~ Reads just the header line to determine which app produced the CSV.
     # Falls back to the user-specified format if auto-detection fails.
     # Exits with an error if the format cannot be determined.
     # =========================
     def _detect_csv_format(self, path: str, fmt: str) -> str:
         if fmt != "auto":
-            # User told us explicitly — trust them
             return fmt
 
         with open(path) as f:
@@ -632,3 +659,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
