@@ -56,7 +56,8 @@
      <property name="styleSheet">
       <string notr="true">QLineEdit, QComboBox, QDoubleSpinBox {
     background-color: #ffffff;
-    border-radius: 14px;
+    border: 1px solid #24242b;
+    border-radius: 4px;
     padding: 4px 8px;
     selection-background-color: #89b4fa;
 }</string>
