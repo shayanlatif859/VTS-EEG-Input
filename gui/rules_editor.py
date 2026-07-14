@@ -2,11 +2,24 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QListWidget
 from PySide6.QtCore import Signal, QFile
 from PySide6.QtUiTools import QUiLoader
 import os
+import sys
+from gui.resources import resource_path
 
 BANDS   = ["delta", "theta", "alpha", "beta", "gamma", "faa", "valence", "arousal"]
 SENSORS = ["mean", "AF7", "AF8", "TP9", "TP10"]
 OPS     = ["<", ">", "<=", ">=", "=="]
 
+# =========================
+# Return absolute path to resource for development and PyInstaller.
+# =========================
+def resource_path(relative_path):
+
+    if getattr(sys, "frozen", False):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.dirname(os.path.abspath(__file__))
+
+    return os.path.join(base_path, relative_path)
 UI_DIR = os.path.dirname(__file__)
 
 
@@ -20,7 +33,7 @@ class ConditionRow(QWidget):
         super().__init__(parent)
 
         loader = QUiLoader()
-        file = QFile(os.path.join(UI_DIR, "condition_row.ui"))
+        file = QFile(resource_path("condition_row.ui"))
         file.open(QFile.OpenModeFlag.ReadOnly)
         self.ui = loader.load(file, self)
         file.close()
@@ -66,7 +79,7 @@ class OutputRow(QWidget):
         super().__init__(parent)
 
         loader = QUiLoader()
-        file = QFile(os.path.join(UI_DIR, "output_row.ui"))
+        file = QFile(resource_path("output_row.ui"))
         file.open(QFile.OpenModeFlag.ReadOnly)
         self.ui = loader.load(file, self)
         file.close()

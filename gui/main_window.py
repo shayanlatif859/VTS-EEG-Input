@@ -16,17 +16,18 @@ What is does not:
 """
 
 import json
+import os
+import sys
 
 from PySide6.QtWidgets import QMainWindow, QFileDialog
-from PySide6.QtCore    import Qt, QObject, Signal
+from PySide6.QtCore    import Qt, QObject, Signal, QFile
 from PySide6.QtUiTools import QUiLoader
 
 from core.pipeline     import EEGPipeline
 from core.bridge       import VTSBridge
 from gui.rules_editor  import RulesEditorPanel
+from gui.resources import resource_path
 # TODO: from gui.brain_display import BrainDisplay !
-
-
 
 # =========================
 # STATE RELAY ~ Lightweight QObject whose only job is carrying the
@@ -54,15 +55,26 @@ class MuseBridgeWindow(QMainWindow):
         #
         # self.ui holds all the named widget references (self.ui.loadButton etc.)
         # =========================
-        loader  = QUiLoader()
-        self.ui = loader.load("main_window.ui", None)
+        loader = QUiLoader()
+        file = QFile(resource_path("gui", "main_window.ui"))
+
+        if not file.open(QFile.OpenModeFlag.ReadOnly):
+            raise RuntimeError(
+                f"Couldn't open {file.fileName()}\n"
+                f"Qt error: {file.errorString()}"
+            )
+
+        self.ui = loader.load(file)
+        file.close()
+
 
         # ⚑
         if self.ui is None:
             raise RuntimeError(
                 "QUiLoader failed to load main_window.ui... "
-                "check the file exists next to main.py"
+                "check the file exists/is valid"
             )
+
 
         # Adopt the central widget, menu bar, and status bar from the loaded
         # QMainWindow into this one so they render correctly
