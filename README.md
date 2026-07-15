@@ -73,27 +73,31 @@ $$
 
 This normalized value may be displayed and, then received by the bridge, which will stream to VTS and using a JSON file mapping these float values to rules, will interpet the rules accordingly.
 
-## Installation
+## Installation and usage
 Type this into the terminal for all the libraries. Ensure pip is installed.
 ```bash
 pip install numpy scipy python-osc pylsl websocket-client brainflow
 ```
-Then download the VTS application, enable API settings, and run bridge_average.py in the terminal.
+Then download the VTS application, enable API settings, go to the directory for the VTS EEG script + modules, and run main.py in the terminal.
 ```bash
-python bridge_average.py
+python main.py
 ```
-Then, go back to the app, approve the connection. Now, you may run musesimulator_average to either connect the MUSE device:
-```bash
-python input_and_simulator_average.py --verbose
-```
-Run a synthetic board:
-```bash
-python input_and_simulator_average.py --verbose --synthetic
-```
-Or run a CSV file from either Muse Direct or Muse Monitor:
-```bash
-python input_and_simulator_average.py --csv '{CSV DIRECTORY HERE}' --verbose  
-```
+It will open the GUI for the project. To use this:
+
+~ Load a JSON file in the header (Just pressing load will load the JSON file that came with the program, you do not need to make your own JSON file)
+
+~ Ensure API for VTube studio is running
+
+~ Run connect to VTS in the bottom left corner
+
+~ Go to VTube Studio and confirm connection
+
+~ Edit and save the JSON file as you wish using the rules editor
+
+~ You may use the "Fetch from VTS" button to load in hotkeys and expressions for your selected model
+
+~ Click on the run data stream menu in the bottom right corner to either run a real MUSE device input, a synthetic 16-channel input, or a .csv recording of a MUSE device
+
 
 ## Current Limitations
 
@@ -139,19 +143,3 @@ https://github.com/user-attachments/assets/031c560f-9e0e-423c-8ac9-5be87f100114
 Note: This demonstration was done using the older code. If you want to try this code in its current form, run main.py to run the GUI.
 
 <img width="1100" height="823" alt="Screenshot 2026-07-06 at 11 11 43 PM" src="https://github.com/user-attachments/assets/cbc48ebf-e006-4f1e-9dc4-585a5f6a0dfd" />
-
-To use this:
-
-~ Load a JSON file in the header (Just pressing load will load the JSON file that came with the program, you do not need to make your own JSON file)
-
-~ Ensure API for VTube studio is running
-
-~ Run connect to VTS in the bottom left corner
-
-~ Go to VTube Studio and confirm connection
-
-~ Edit and save the JSON file as you wish using the rules editor
-
-~ You may use the "Fetch from VTS" button to load in hotkeys and expressions for your selected model
-
-~ Click on the run data stream menu in the bottom right corner to either run a real MUSE device input, a synthetic 16-channel input, or a .csv recording of a MUSE device
